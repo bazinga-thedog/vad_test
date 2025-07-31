@@ -1,4 +1,4 @@
-package com.example.flutter_silero_vad
+package com.example.winamp
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin

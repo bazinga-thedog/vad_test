@@ -1,4 +1,4 @@
-package com.example.flutter_silero_vad_example
+package com.example.winamp_example
 
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment

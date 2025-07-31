@@ -1,4 +1,4 @@
-package com.example.flutter_silero_vad;
+package com.example.winamp;
 
 interface VadIterator {
     fun predict(data: FloatArray): Boolean
