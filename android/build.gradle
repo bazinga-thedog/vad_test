@@ -1,4 +1,4 @@
-group 'com.example.winamp'
+group 'com.example.flutter_silero_vad'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -25,7 +25,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    namespace "com.example.winamp"
+    namespace "com.example.flutter_silero_vad"
     
     compileSdkVersion 31
 

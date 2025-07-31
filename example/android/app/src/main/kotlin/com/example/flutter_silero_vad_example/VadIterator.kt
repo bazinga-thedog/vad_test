@@ -1,4 +1,4 @@
-package com.example.winamp_example
+package com.example.winamp
 
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment

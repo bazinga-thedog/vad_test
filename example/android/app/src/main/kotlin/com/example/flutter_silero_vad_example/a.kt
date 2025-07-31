@@ -1,8 +1,8 @@
-package com.example.winamp_example
+package com.example.winamp
 
 import androidx.annotation.NonNull
 
-import com.example.winamp_example.VadIterator
+import com.example.winamp.VadIterator
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall

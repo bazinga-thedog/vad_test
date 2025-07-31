@@ -1,4 +1,4 @@
-# flutter_silero_vad_example
+# winamp
 
 Demonstrates how to use the flutter_silero_vad plugin.
 

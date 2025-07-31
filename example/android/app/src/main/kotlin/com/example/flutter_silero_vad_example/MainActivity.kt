@@ -1,4 +1,4 @@
-package com.example.winamp_example
+package com.example.winamp
 
 import io.flutter.embedding.android.FlutterActivity
 
