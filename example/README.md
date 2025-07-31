@@ -1,6 +1,6 @@
-# flutter_silero_vad_example
+# vad_example
 
-Demonstrates how to use the flutter_silero_vad plugin.
+A new Flutter project.
 
 ## Getting Started
 

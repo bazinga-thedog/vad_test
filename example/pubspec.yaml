@@ -1,31 +1,40 @@
-name: flutter_silero_vad_example
-description: Demonstrates how to use the flutter_silero_vad plugin.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+name: vad_example
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
 
 environment:
-  sdk: ">=3.1.3 <4.0.0"
+  sdk: ^3.5.3
 
 dependencies:
-  audio_session: ^0.1.19
-  audio_streamer:
-    git:
-      url: https://github.com/char5742/audio_streamer.git
-      ref: 86efe28503b14bb26925a091439cb2a9a835fd1f
-  audioplayers: ^6.0.0
   flutter:
     sdk: flutter
-  flutter_hooks: ^0.20.5
-  flutter_silero_vad:
+  cupertino_icons: ^1.0.8
+  permission_handler: ^12.0.0+1
+  audioplayers: ^6.5.0
+  vad:
     path: ../
-  hooks_riverpod: ^2.5.1
-  path_provider: ^2.1.3
-  permission_handler: ^11.3.1
-
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   flutter_lints: ^4.0.0
+  import_sorter: ^4.6.0
+
+dependency_overrides:
+  record:
+    git:
+      url: https://github.com/keyur2maru/record.git
+      ref: master
+      path: record
+  record_macos:
+    git:
+      url: https://github.com/keyur2maru/record.git
+      ref: master
+      path: record_macos
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/silero_vad.v5.onnx
+    - assets/
