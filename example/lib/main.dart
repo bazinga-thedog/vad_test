@@ -95,8 +95,8 @@ class _VadManagerState extends State<VadManager> {
           manageAudioSession: true,
         ),
       ),
-      // baseAssetPath: '/assets/', // Alternative to using the CDN (see README.md)
-      // onnxWASMBasePath: '/assets/', // Alternative to using the CDN (see README.md)
+      baseAssetPath: '/assets/', // Alternative to using the CDN (see README.md)
+      onnxWASMBasePath: '/assets/', // Alternative to using the CDN (see README.md)
     );
     setState(() {
       isListening = true;
