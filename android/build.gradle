@@ -1,56 +1,65 @@
-group 'com.example.flutter_silero_vad'
-version '1.0-SNAPSHOT'
+// The Android Gradle Plugin builds the native code with the Android NDK.
+
+group = "com.example.flutter_recorder"
+version = "1.0"
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // The Android Gradle Plugin knows how to build native code with the NDK.
+        classpath("com.android.tools.build:gradle:7.3.0")
     }
 }
 
-allprojects {
+rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+apply plugin: "com.android.library"
 
 android {
-    namespace "com.example.flutter_silero_vad"
-    
-    compileSdkVersion 31
+    if (project.android.hasProperty("namespace")) {
+        namespace = "com.example.flutter_recorder"
+    }
+
+    // Bumping the plugin compileSdk version requires all clients of this plugin
+    // to bump the version in their app.
+    compileSdk = 34
+
+    // Use the NDK version
+    // declared in /android/app/build.gradle file of the Flutter project.
+    // Replace it with a version number if this plugin requires a specific NDK version.
+    // (e.g. ndkVersion "23.1.7779620")
+    ndkVersion = android.ndkVersion
+
+    // Invoke the shared CMake build with the Android Gradle Plugin.
+    externalNativeBuild {
+        cmake {
+            path = "../src/CMakeLists.txt"
+
+            // The default CMake version for the Android Gradle Plugin is 3.10.2.
+            // https://developer.android.com/studio/projects/install-ndk#vanilla_cmake
+            //
+            // The Flutter tooling requires that developers have CMake 3.10 or later
+            // installed. You should not increase this version, as doing so will cause
+            // the plugin to fail to compile for some customers of the plugin.
+            // version "3.10.2"
+        }
+    }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
-        minSdkVersion 16
-    }
-
-    dependencies {
-        implementation 'com.microsoft.onnxruntime:onnxruntime-android:1.13.1'
-        // Dependencies below are required only for development in the IDE.
-    //    implementation 'androidx.annotation:annotation:1.8.0'
-    //    implementation 'androidx.annotation:annotation-experimental:1.4.1'
-    //    implementation files('/opt/homebrew/Caskroom/flutter/3.0.5/flutter/bin/cache/artifacts/engine/android-arm64-release/flutter.jar')
+        minSdk = 21
     }
 }

@@ -1,6 +1,6 @@
-# winamp
+# flutter_recorder_example
 
-Demonstrates how to use the flutter_silero_vad plugin.
+Demonstrates how to use the flutter_recorder plugin.
 
 ## Getting Started
 
