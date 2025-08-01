@@ -48,18 +48,29 @@ class _VADHomePageState extends State<VADHomePage> {
   @override
   void initState() {
     super.initState();
-    //_initTFLite();
+    _initTFLite();
     _requestPermissions();
   }
 
   Future<void> _initTFLite() async {
     try {
+      // Check if running on iOS and handle accordingly
+      if (Platform.isIOS) {
+        dv.log('Initializing TFLite on iOS...');
+      }
+      
       _interpreter = await Interpreter.fromAsset('assets/vad.tflite');
       dv.log('TFLite model loaded successfully');
+      
+      if (_interpreter == null) {
+        throw Exception('Failed to create interpreter');
+      }
+      
       var inputTensor = _interpreter!.getInputTensor(0);
       var outputTensor = _interpreter!.getOutputTensor(0);
       dv.log('Input tensor shape: ${inputTensor.shape}');
-      print('Output tensor shape: ${outputTensor.shape}');
+      dv.log('Output tensor shape: ${outputTensor.shape}');
+      
       if (inputTensor.shape.length != 2 || outputTensor.shape.length != 2) {
         dv.log('Warning: Model has non-2D tensor shapes');
         setState(() {
@@ -69,7 +80,7 @@ class _VADHomePageState extends State<VADHomePage> {
     } catch (e) {
       dv.log('Error loading TFLite model: $e');
       setState(() {
-        _vadResult = 'Failed to load model';
+        _vadResult = 'Failed to load model: ${e.toString()}';
       });
     }
   }
@@ -86,9 +97,18 @@ class _VADHomePageState extends State<VADHomePage> {
   }
 
   Future<void> _startRecording() async {
-    if (await _recorder.hasPermission()) {
+    try {
+      if (!await _recorder.hasPermission()) {
+        dv.log('No recording permission');
+        setState(() {
+          _vadResult = 'Recording permission denied';
+        });
+        return;
+      }
+      
       final directory = await getTemporaryDirectory();
       _audioPath = '${directory.path}/recording_$_segmentCounter.wav';
+      
       await _recorder.start(
         const RecordConfig(
           encoder: AudioEncoder.wav,
@@ -98,12 +118,19 @@ class _VADHomePageState extends State<VADHomePage> {
         ),
         path: _audioPath!,
       );
+      
       setState(() {
         _isRecording = true;
         _vadResult = 'Recording...';
       });
+      
       Future.delayed(const Duration(milliseconds: 1500), () {
         if (_isRecording) _startVADProcessing();
+      });
+    } catch (e) {
+      dv.log('Error starting recording: $e');
+      setState(() {
+        _vadResult = 'Error starting recording';
       });
     }
   }
@@ -120,22 +147,31 @@ class _VADHomePageState extends State<VADHomePage> {
 
   void _startVADProcessing() {
     _vadTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      if (_isRecording && _audioPath != null && _interpreter != null) {
-        _segmentCounter++;
-        final directory = await getTemporaryDirectory();
-        final newAudioPath = '${directory.path}/recording_$_segmentCounter.wav';
-        await _recorder.stop();
-        await _recorder.start(
-          const RecordConfig(
-            encoder: AudioEncoder.wav,
-            bitRate: 128000,
-            sampleRate: 16000,
-            numChannels: 1,
-          ),
-          path: newAudioPath,
-        );
-        await _processAudioForVAD(_audioPath!);
-        _audioPath = newAudioPath;
+      try {
+        if (_isRecording && _audioPath != null && _interpreter != null) {
+          _segmentCounter++;
+          final directory = await getTemporaryDirectory();
+          final newAudioPath = '${directory.path}/recording_$_segmentCounter.wav';
+          
+          await _recorder.stop();
+          await _recorder.start(
+            const RecordConfig(
+              encoder: AudioEncoder.wav,
+              bitRate: 128000,
+              sampleRate: 16000,
+              numChannels: 1,
+            ),
+            path: newAudioPath,
+          );
+          
+          await _processAudioForVAD(_audioPath!);
+          _audioPath = newAudioPath;
+        }
+      } catch (e) {
+        dv.log('Error in VAD processing: $e');
+        setState(() {
+          _vadResult = 'Error in VAD processing';
+        });
       }
     });
   }
