@@ -48,7 +48,7 @@ class _VADHomePageState extends State<VADHomePage> {
   @override
   void initState() {
     super.initState();
-    _initTFLite();
+    //_initTFLite();
     _requestPermissions();
   }
 

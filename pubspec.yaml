@@ -14,7 +14,6 @@ dependencies:
   audio_waveforms: ^1.0.5
   permission_handler: ^11.3.1
   path_provider: ^2.0.11
-
   record: ^6.0.0
 
 
