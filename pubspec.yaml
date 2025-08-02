@@ -1,4 +1,4 @@
-name: hello_world_app
+name: winamp
 description: "A simple Flutter Hello World application for iOS and Android."
 publish_to: 'none'
 version: 1.0.0+1
