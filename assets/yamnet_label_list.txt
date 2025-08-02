@@ -1,5 +1,0 @@
-Speech
-Silence
-Music
-Noise
-Animal
